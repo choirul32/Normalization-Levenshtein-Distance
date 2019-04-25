@@ -1,0 +1,83 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+    <title>Normalisasi</title>
+    <link rel="stylesheet" type = "text/css" href="{% static 'word2vec_web/css/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'word2vec_web/css/bootstrap.min.css' %}">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        
+         <script>
+        //     $(document).ready(function(){
+        //         $("button1").click(function(){
+        //             var text = $('#your-text').val();
+        //             console.log(text);
+        //             $.ajax({
+        //                 type: "POST",
+        //                 url: "process/",
+        //                 data: {text: $('#your-text').val()},
+        //                 success: function(data) {
+        //                     // $("#result").html(data);
+        //                     alert(data);
+        //             }});
+        //         });
+        //     });
+            
+         </script>
+</head>
+<body>
+	<div class="container mb-4 mt-3">
+		<h1>Normalisasi Out Of Vocabulary Bahasa Indonesia</h1>
+	</div>
+	
+	<form id='normalisation' method="post" class="container">
+		<div class="row">
+			{% csrf_token %}
+			<div class="col-sm" >
+				<div class="form-group" >
+					<label for="textarea">Input</label>
+					<textarea placeholder="masukan teks..." style="height: 200px;"class="form-control form-control-lg" type="text" id="your-text" name="your-text" value="{{ text }}" required>{{ input }}</textarea>
+				</div>
+			</div>
+			<div class="col-sm">
+				<label for="textarea">Output</label>
+						 
+				
+				
+				<div>
+					<h4>
+					{% for item in output_norm %}
+						{% if item.1 != None %}
+							{% if item.1.0 != None %}
+								{{ item.1.0 }}
+							{% else %}
+								{{ item.0 }}
+							{% endif %}	
+						{% else %}
+							{{ item.0 }}
+						{% endif %}
+					{% endfor %}
+					</h4>
+				</div>
+				<!-- Example single danger button -->
+
+				{# <textarea style="height: 200px;" class="form-control form-control-lg" id="result">{{ hasil }}</textarea> #}
+			</div>
+			
+			<div class="w-100"></div>
+
+			<div class="col-sm">
+				<button type="submit" value="input" class="btn btn-primary">Normalise</button>
+			</div>
+		</div>
+	</form>
+
+</body>
+</html>
+

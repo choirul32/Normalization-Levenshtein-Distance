@@ -1,0 +1,85 @@
+{% load static %}
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>TAMBAH DATA</title>
+        <link rel="stylesheet" type = "text/css" href="{% static '/word2vec_web/css/style.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static '/word2vec_web/css/bootstrap.min.css' %}">
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script>
+            $(document).ready(function(){
+                $("#button2").click(function(){
+                    var text = $('#new_source_vocab').val();
+                    console.log(text);
+                    var new_sentences = document.getElementById("new_raw");
+                    $.ajax({
+                        type: "POST",
+                        url: "/addnewraw/new_crawling/",
+                        data: {text: $('#new_source_vocab').val()},
+                        success: function(data) {
+                            new_sentences.setAttribute("value", data);
+                    }});                    
+                });
+                $("#button1").click(function(){
+                    $.ajax({
+                        type: "POST",
+                        url: "/addnewraw/update_model/",
+                        data: {
+                            new_source_vocab: $('#new_source_vocab').val(),
+                            new_target_vocab : $('#new_target_vocab').val(),
+                            new_sentences : $('#new_raw').val(),
+                        },
+                        success: function(data) {
+                            console.log(data);
+                            $("#new_raw").html(data);
+                    }});
+                });
+            });
+            
+        </script>
+
+    </head>
+    <body>
+        <div class="container-fluid justify-content-center align-items-center">
+            <div class="row">
+                <div class="col-md-12">
+                    <h3 class="text-center">
+                        TAMBAH DATA
+                    </h3>
+                </div>
+            </div>
+            <div class="row ">
+                <div class="col-md-10">
+                    <form id='normalisation' method="post">
+                        {% csrf_token %}
+                        {{ form }}
+                        <div class="form-group">
+
+                            source <input type="text" class="form-control" id="new_source_vocab" name="new_source_vocab" value="{{ current_name }}"><br><br>
+                            target <input type="text" class="form-control" id="new_target_vocab" name="new_target_vocab" value="{{ current_name }}"><br><br>
+                            raw sentences <textarea style="width:1200px;height:300px" align="top" type="text" id="new_raw" name="new_raw" value="{{ current_name }}"></textarea> 
+                        </div>
+                        
+                    </form>
+                    <button id="button1" type="submit" value="input" class="btn btn-primary">Train New Model</button>
+                    <button id="button2" type="submit" value="input" class="btn btn-primary">Crawling</button>
+                    <div class="col-md-12"><h2 id="h21"></h2></div>
+                        
+                    <div id="div1" style="width:80px;height:80px;display:none;background-color:red;"></div>
+                    
+
+                </div>
+                    
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <h3>
+                        <!-- output text disini -->
+                    </h3>
+                </div>
+            </div>
+        </div>
+
+    </body>
+</html>
